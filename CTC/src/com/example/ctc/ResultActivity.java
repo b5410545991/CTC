@@ -2,6 +2,7 @@ package com.example.ctc;
 
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
@@ -20,14 +21,14 @@ public class ResultActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result);
 		
-		MainActivity sv = new MainActivity();
-		boolean sex = sv.getSex();
 		
-		
+		//recieve value from main page
 		String a = getIntent().getStringExtra("Age");
 		String h = getIntent().getStringExtra("Height");
 		String w = getIntent().getStringExtra("Weight");
+		boolean sex = getIntent().getBooleanExtra("Sex", false);
 		
+		//chang string to integer type
 		double age = Integer.parseInt(a);
 		double height = Integer.parseInt(h);
 		double weight = Integer.parseInt(w);
@@ -45,16 +46,29 @@ public class ResultActivity extends Activity {
 			result = 66.47 + (13.75 * weight) + (5 * height) - (6.76 * age);
 		}
 		
+		//show the result
 		TextView text_TotalCalorie = (TextView) findViewById(R.id.textView1);
-		text_TotalCalorie.setText("" + sex + " Kcal/day");
+		text_TotalCalorie.setText("" + result + " Kcal/day");
 		
-		
+		//back to main page
 		final Button btn_back = (Button) findViewById(R.id.button1);
 		btn_back.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent newActivity = new Intent(ResultActivity.this,
 						MainActivity.class);
 				startActivity(newActivity);
+				finish();
+
+			}
+		});
+		
+		//for temporaly
+		final Button btn_food = (Button) findViewById(R.id.button2);
+		btn_food.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Uri uri = Uri.parse("http://www.calorieking.com/foods/");
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
+				startActivity(intent);
 				finish();
 
 			}
